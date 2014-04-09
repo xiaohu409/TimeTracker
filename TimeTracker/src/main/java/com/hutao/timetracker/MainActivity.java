@@ -22,6 +22,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private TextView counter;
 
+    private TextView seconds;
+
+    private String temp;
+
     private TimeListAdapter timeListAdapter;
 
     private Button startButton;
@@ -44,6 +48,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         counter = (TextView)findViewById(R.id.counter);
         counter.setText(DateUtils.formatElapsedTime(0));
+        seconds = (TextView)findViewById(R.id.seconds);
+        temp = DateUtils.formatElapsedTime(0);
+        seconds.setText(temp.substring(temp.length()-2,temp.length()));
         if (sharedPreferences.getString("color","White").equals("White")) {
             counter.setTextColor(getResources().getColor(R.color.white));
         }
@@ -177,8 +184,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             long current = System.currentTimeMillis();
             mTime += current - mStart;
             mStart = current;
+            temp =DateUtils.formatElapsedTime(mTime/10);
+            seconds.setText(temp.substring(temp.length()-2,temp.length()));
             counter.setText(DateUtils.formatElapsedTime(mTime/1000));
-            mHandler.sendEmptyMessageDelayed(0,1000);
+            mHandler.sendEmptyMessageDelayed(0,10);
         }
     }
 }
