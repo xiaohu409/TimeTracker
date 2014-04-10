@@ -99,6 +99,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 else {
                     resetTimer();
                     counter.setText(DateUtils.formatElapsedTime(0));
+                    temp = DateUtils.formatElapsedTime(0);
+                    seconds.setText(temp.substring(temp.length()-2,temp.length()));
                     startButton.setText(R.string.start);
                 }
                 break;

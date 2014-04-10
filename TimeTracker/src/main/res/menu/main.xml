@@ -4,7 +4,8 @@
     tools:context="com.hutao.timetracker.MainActivity" >
     
     <item android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>
