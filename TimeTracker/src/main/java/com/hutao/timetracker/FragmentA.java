@@ -13,14 +13,15 @@ public class FragmentA extends PreferenceFragment implements SharedPreferences.O
 
     private ListPreference listPreference;
 
-    private SharedPreferences preferences;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences preferences;
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pre_scr);
         listPreference = (ListPreference)findPreference("color");
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         preferences.registerOnSharedPreferenceChangeListener(this);
         listPreference.setSummary(preferences.getString("color","White"));
     }

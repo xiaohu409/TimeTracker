@@ -1,24 +1,23 @@
 package com.hutao.timetracker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.ListPreference;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends Activity implements View.OnClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private TextView counter;
 
@@ -38,13 +37,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private long mTime;
 
-    private SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sharedPreferences;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         counter = (TextView)findViewById(R.id.counter);
         counter.setText(DateUtils.formatElapsedTime(0));
@@ -126,11 +126,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
+        ShareActionProvider shareActionProvider;
+        MenuItem shareItem;
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        shareItem = menu.findItem(R.id.action_share);
+        if (shareItem != null) {
+            shareActionProvider = (ShareActionProvider)shareItem.getActionProvider();
+            if (shareActionProvider != null) {
+                shareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+                shareActionProvider.setShareIntent(getDefaultIntent());
+            }
+        }
         return true;
     }
+
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM,"");
+        return intent;
+}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
